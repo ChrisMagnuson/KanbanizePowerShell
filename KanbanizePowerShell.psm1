@@ -170,7 +170,12 @@ Function New-KanbanizeTask {
         $ExtLink,
         $Type,
         $Template,
-        [hashtable]$CustomFields
+        [hashtable]$CustomFields,
+        $Column,
+        $Lane,
+        $Position,
+        $ExceedingReason,
+        $ReturnTaskDetails
     )
     #Invoke-KanbanizeAPIFunctionWithURIEncodedParameters -FunctionName create_new_task -Parameters $PSBoundParameters
     Invoke-KanbanizeAPIFunction -FunctionName create_new_task -Parameters $PSBoundParameters

@@ -1,10 +1,10 @@
-Import-Module .\KanbanizeTheWayItShouldBe.ps1 -Force
+Import-Module KanbanizePowershell -Force
 
-$Email = ""
-$Password = ""
-$SubDomain = ""
-$TestBoardID = 
-$UserName = ""
+$Email = "cmagnuson@tervis.com"
+$Password = "BobBillJoe1"
+$SubDomain = "tervis"
+$TestBoardID = 23
+$UserName = "Chris Magnuson"
 
 Describe "Set-KanbanizeSubDomain" {
     it "Sets subdomain used for your Kanbanize api URL" {
@@ -44,6 +44,14 @@ Describe "New-KanbanizeTask" {
         $TaskDetails.title | should be "Test title"
         Remove-KanbanizeTask -BoardID $TestBoardID -TaskID $NewTaskResult.id
     }
+
+    it "Create a new task with basic title in the In Progress column" {
+        $NewTaskResult = New-KanbanizeTask -BoardID $TestBoardID -Title "Test title" -Column "In Progress"
+        $TaskDetails = Get-KanbanizeTaskDetails -BoardID $TestBoardID -TaskID $NewTaskResult.id
+        $TaskDetails.title | should be "Test title"
+        Remove-KanbanizeTask -BoardID $TestBoardID -TaskID $NewTaskResult.id
+    }
+
 
     it "Create a new task with advanced title" {
         $NewTaskResult = New-KanbanizeTask -BoardID $TestBoardID -Title "Check out http://www.kanbanize.com/thisthing?stuff=something"
@@ -116,6 +124,13 @@ Describe "New-KanbanizeTask" {
     it "" {
     }#>
 
+}
+
+Describe "Move-KanbanizeTask" {
+    it "Moves Kanbanize task between columns" {
+        $NewTaskResult = New-KanbanizeTask -BoardID $TestBoardID -Title "Check out http://www.kanbanize.com/thisthing?stuff=something" -Description "Advanced http://www.kanbanize.com/thisthing?stuff=something" -Assignee "Test User" -CustomFields @{"trackitid"=68316;"trackiturl"="http://trackit/TTHelpdesk/Application/Main?tabs=w68316"}
+
+    }
 }
 
 Describe "Get-KanbanizeTaskDetails" {
