@@ -1,5 +1,14 @@
-$script:RootAPIURL = "http://www.kanbanize.com/index.php/api/kanbanize"
-$script:Headers = @{"apikey"=1234}
+if($env:KanbanizeSubDomain) {
+    $script:RootAPIURL = "http://$Env:KanbanizeSubDomain.kanbanize.com/index.php/api/kanbanize"
+} else {
+    $script:RootAPIURL = "http://www.kanbanize.com/index.php/api/kanbanize"
+}
+
+if($Env:KanbanizeAPIKey) {
+    $script:Headers = @{"apikey"=$Env:KanbanizeAPIKey}
+} else {
+    $script:Headers = @{"apikey"=1234}
+}
 
 Function Set-KanbanizeResponseFormat {
     param(
@@ -14,22 +23,34 @@ Set-KanbanizeResponseFormat json
 
 Function Set-KanbanizeSubDomain {
     param(
-        [parameter(Mandatory = $true)]$SubDomain
+        [parameter(Mandatory = $true)]$SubDomain,
+        [switch]$Permenant
     )
+    
+    if ($Permenant) {
+        [Environment]::SetEnvironmentVariable( "KanbanizeSubDomain", $SubDomain, "User" )
+    }
+
     $script:RootAPIURL = "http://$SubDomain.kanbanize.com/index.php/api/kanbanize"
 }
 
 Function Invoke-KanbanizeLogin {
     param(
         [parameter(Mandatory = $true)]$Email, 
-        [parameter(Mandatory = $true)]$Pass
+        [parameter(Mandatory = $true)]$Pass,
+        [switch]$Permenant
     )
-
+    
+    $PSBoundParameters.Remove("Permenant") | Out-Null
     $Response = Invoke-KanbanizeAPIFunction -FunctionName login -Parameters $PSBoundParameters 
+    
     if (-not $Response.apikey) { throw "No apikey returned" }
 
-    $script:APIKey = $Response.apikey
-    $script:Headers = @{"apikey"=$APIKey}
+    if ($Permenant) {
+        [Environment]::SetEnvironmentVariable( "KanbanizeAPIKey", $Response.apikey, "User" )
+    }
+
+    $script:Headers = @{"apikey"=$Response.apikey}
 }
 
 function Get-KanbanizeAPIURLWithParametersInURL {
