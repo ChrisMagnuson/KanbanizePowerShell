@@ -87,13 +87,34 @@ function Invoke-KanbanizeAPIFunction {
     )
 
     $ParametersWithLowerCaseNames = @{}
+    
     $Parameters.Keys |
-        where {$_ -ne "CustomFields"} | 
-        % { $ParametersWithLowerCaseNames.Add($_.ToLower(), [Uri]::EscapeDataString($Parameters[$_])) }
+    where {$_ -ne "CustomFields"} | 
+    % { 
+        $ParametersWithLowerCaseNames.Add(
+            $_.ToLower(), 
+            [Uri]::EscapeDataString( 
+                $(
+                    #Kanbanize api requires escaping \ and " with an additional \
+                    ($Parameters[$_]  -replace "\\", "\\") -replace '"','\"' 
+                )
+            )
+        ) 
+    }
     
     if($Parameters["CustomFields"]) {
         $Parameters["CustomFields"].keys | 
-            % { $ParametersWithLowerCaseNames.Add($_.ToLower(), [Uri]::EscapeDataString($Parameters["CustomFields"][$_])) }
+        % { 
+            $ParametersWithLowerCaseNames.Add(
+                $_.ToLower(), 
+                [Uri]::EscapeDataString(
+                    $(
+                        #Kanbanize api requires escaping \ and " with an additional \
+                        ($Parameters["CustomFields"][$_] -replace "\\", "\\") -replace '"','\"'
+                    )
+                )
+            )
+        }
     }
 
     $ParametersWithLowerCaseNamesJson = $ParametersWithLowerCaseNames | ConvertTo-Json

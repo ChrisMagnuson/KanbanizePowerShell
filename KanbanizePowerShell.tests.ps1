@@ -1,10 +1,10 @@
 Import-Module KanbanizePowershell -Force
 
-$Email = "cmagnuson@tervis.com"
-$Password = "BobBillJoe1"
-$SubDomain = "tervis"
-$TestBoardID = 23
-$UserName = "Chris Magnuson"
+$Email = read-host "Email"
+$Password = read-host "Password"
+$SubDomain = read-host "Subdomain (leave blank if testing with a free account)"
+$TestBoardID = read-host "Test Board ID"
+$UserName = Read-Host "UserName"
 
 Describe "Set-KanbanizeSubDomain" {
     it "Sets subdomain used for your Kanbanize api URL" {
