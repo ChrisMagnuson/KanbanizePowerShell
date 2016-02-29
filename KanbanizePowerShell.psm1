@@ -219,7 +219,6 @@ Function New-KanbanizeTask {
         $ExceedingReason,
         $ReturnTaskDetails
     )
-    #Invoke-KanbanizeAPIFunctionWithURIEncodedParameters -FunctionName create_new_task -Parameters $PSBoundParameters
     Invoke-KanbanizeAPIFunction -FunctionName create_new_task -Parameters $PSBoundParameters
 }
 
@@ -250,7 +249,7 @@ Function Get-KanbanizeAllTasks {
         [Parameter(ParameterSetName="Container")]$FromDate,
         [Parameter(ParameterSetName="Container")]$ToDate,
         [Parameter(ParameterSetName="Container")]$Version,
-        $Page,
+        [Parameter(ParameterSetName="Container")]$Page,
         [ValidateSet("plain","html")]$TextFormat
     )
     Invoke-KanbanizeAPIFunction -FunctionName get_all_tasks -Parameters $PSBoundParameters
