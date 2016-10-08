@@ -277,8 +277,8 @@ Function Move-KanbanizeTask {
 
 Function Edit-KanbanizeTask {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)]$TaskID,
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)]$TaskID,
         $Title,
         $Description,
         $Priority,
