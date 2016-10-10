@@ -6,8 +6,6 @@ if($env:KanbanizeSubDomain) {
 
 if($Env:KanbanizeAPIKey) {
     $script:Headers = @{"apikey"=$Env:KanbanizeAPIKey}
-} else {
-    $script:Headers = @{"apikey"=1234}
 }
 
 Function Set-KanbanizeResponseFormat {
@@ -24,10 +22,10 @@ Set-KanbanizeResponseFormat json
 Function Set-KanbanizeSubDomain {
     param(
         [parameter(Mandatory = $true)]$SubDomain,
-        [switch]$Permenant
+        [switch]$Permanent
     )
     
-    if ($Permenant) {
+    if ($Permanent) {
         [Environment]::SetEnvironmentVariable( "KanbanizeSubDomain", $SubDomain, "User" )
     }
 
@@ -38,15 +36,15 @@ Function Invoke-KanbanizeLogin {
     param(
         [parameter(Mandatory = $true)]$Email, 
         [parameter(Mandatory = $true)]$Pass,
-        [switch]$Permenant
+        [switch]$Permanent
     )
     
-    $PSBoundParameters.Remove("Permenant") | Out-Null
+    $PSBoundParameters.Remove("Permanent") | Out-Null
     $Response = Invoke-KanbanizeAPIFunction -FunctionName login -Parameters $PSBoundParameters 
     
     if (-not $Response.apikey) { throw "No apikey returned" }
 
-    if ($Permenant) {
+    if ($Permanent) {
         [Environment]::SetEnvironmentVariable( "KanbanizeAPIKey", $Response.apikey, "User" )
     }
 
