@@ -8,6 +8,17 @@ if($Env:KanbanizeAPIKey) {
     $script:Headers = @{"apikey"=$Env:KanbanizeAPIKey}
 }
 
+function Clear-KanbanizeAPIKey {
+    Set-KanbanizeAPIKey -Key ""
+}
+
+function Set-KanbanizeAPIKey {
+    param(
+        [parameter(Mandatory)]$Key
+    )
+    [Environment]::SetEnvironmentVariable( "KanbanizeAPIKey", $Key, "User" )
+}
+
 Function Set-KanbanizeResponseFormat {
     param(
         [parameter(Mandatory = $true)]
@@ -45,7 +56,7 @@ Function Invoke-KanbanizeLogin {
     if (-not $Response.apikey) { throw "No apikey returned" }
 
     if ($Permanent) {
-        [Environment]::SetEnvironmentVariable( "KanbanizeAPIKey", $Response.apikey, "User" )
+        Set-KanbanizeAPIKey -Key $Response.apikey
     }
 
     $script:Headers = @{"apikey"=$Response.apikey}
