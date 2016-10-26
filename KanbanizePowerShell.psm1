@@ -21,7 +21,7 @@ function Set-KanbanizeAPIKey {
 
 Function Set-KanbanizeResponseFormat {
     param(
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory)]
         [ValidateSet("json","xml")]
         $Format
     )
@@ -32,7 +32,7 @@ Set-KanbanizeResponseFormat json
 
 Function Set-KanbanizeSubDomain {
     param(
-        [parameter(Mandatory = $true)]$SubDomain,
+        [parameter(Mandatory)]$SubDomain,
         [switch]$Permanent
     )
     
@@ -45,8 +45,8 @@ Function Set-KanbanizeSubDomain {
 
 Function Invoke-KanbanizeLogin {
     param(
-        [parameter(Mandatory = $true)]$Email, 
-        [parameter(Mandatory = $true)]$Pass,
+        [parameter(Mandatory)]$Email, 
+        [parameter(Mandatory)]$Pass,
         [switch]$Permanent
     )
     
@@ -64,7 +64,7 @@ Function Invoke-KanbanizeLogin {
 
 function Get-KanbanizeAPIURLWithParametersInURL {
     param(
-        [parameter(Mandatory = $true)]$FunctionName, 
+        [parameter(Mandatory)]$FunctionName, 
         $Parameters = @{}
     )
     $URLEncodedParameters = @{}
@@ -82,7 +82,7 @@ function Get-KanbanizeAPIURLWithParametersInURL {
 
 function Get-KanbanizeAPIURL {
     param(
-        [parameter(Mandatory = $true)]$FunctionName
+        [parameter(Mandatory)]$FunctionName
     )
     $URL = $script:RootAPIURL + "/" + $FunctionName 
     $URL += "/format/" + $Format
@@ -91,7 +91,7 @@ function Get-KanbanizeAPIURL {
 
 function Invoke-KanbanizeAPIFunction {
     param(
-        [parameter(Mandatory = $true)]$FunctionName,
+        [parameter(Mandatory)]$FunctionName,
         $Parameters = @{}
     )
 
@@ -135,7 +135,7 @@ function Invoke-KanbanizeAPIFunction {
 
 function Invoke-KanbanizeAPIFunctionWithURIEncodedParameters {
     param(
-        [parameter(Mandatory = $true)]$FunctionName,
+        [parameter(Mandatory)]$FunctionName,
         $Parameters = @{}
     )
 
@@ -158,7 +158,7 @@ function Invoke-KanbanizeAPIFunctionWithURIEncodedParameters {
 
 function Invoke-KanbanizeAPIFunctionWithParametersInURL {
     param(
-        [parameter(Mandatory = $true)]$FunctionName,
+        [parameter(Mandatory)]$FunctionName,
         $Parameters = @{}
     )
     $URL = Get-KanbanizeAPIURLWithParametersInURL -FunctionName $FunctionName -Parameters $Parameters
@@ -171,30 +171,30 @@ Function Get-KanbanizeProjectsAndBoards{
 
 Function Get-KanbanizeBoardStructure {
     param(
-        [parameter(Mandatory = $true)]$BoardID
+        [parameter(Mandatory)]$BoardID
     )
     Invoke-KanbanizeAPIFunction -FunctionName get_board_structure -Parameters $PSBoundParameters
 }
 
 Function Get-KanbanizeFullBoardStructure {
     param(
-        [parameter(Mandatory = $true)]$BoardID
+        [parameter(Mandatory)]$BoardID
     )
     Invoke-KanbanizeAPIFunction -FunctionName get_full_board_structure -Parameters $PSBoundParameters
 }
 
 Function Get-KanbanizeFullBoardSettings {
     param(
-        [parameter(Mandatory = $true)]$BoardID
+        [parameter(Mandatory)]$BoardID
     )
     Invoke-KanbanizeAPIFunction -FunctionName get_board_settings -Parameters $PSBoundParameters
 }
 
 Function Get-KanbanizeBoardActivities {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)][Datetime]$FromDate = (get-date),
-        [parameter(Mandatory = $true)][Datetime]$ToDate = (get-date),
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)][Datetime]$FromDate = (get-date),
+        [parameter(Mandatory)][Datetime]$ToDate = (get-date),
         [int]$Page,
         [int]$ResultsPerPage,
         $Author,
@@ -209,7 +209,7 @@ Function Get-KanbanizeBoardActivities {
 
 Function New-KanbanizeTask {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
+        [parameter(Mandatory)]$BoardID,
         $Title,
         $Description,
         $Priority,
@@ -233,16 +233,16 @@ Function New-KanbanizeTask {
 
 Function Remove-KanbanizeTask {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)]$TaskID
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)]$TaskID
     )
     Invoke-KanbanizeAPIFunction -FunctionName delete_task -Parameters $PSBoundParameters
 }
 
 Function Get-KanbanizeTaskDetails {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)]$TaskID,
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)]$TaskID,
         [ValidateSet("yes")] $History,
         [ValidateSet("move","create","update","block","delete","comment","archived","subtask","loggedtime")]$Event,
         [ValidateSet("plain","html")]$TextFormat
@@ -252,7 +252,7 @@ Function Get-KanbanizeTaskDetails {
 
 Function Get-KanbanizeAllTasks {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
+        [parameter(Mandatory)]$BoardID,
         [ValidateSet("yes")] $Subtasks,
         [ValidateSet("archive")][Parameter(ParameterSetName='Container')]$Container,
         [Parameter(ParameterSetName="Container")]$FromDate,
@@ -266,7 +266,7 @@ Function Get-KanbanizeAllTasks {
 
 Function Add-KanbanizeComment {
     param(
-        [parameter(Mandatory = $true)]$TaskID,
+        [parameter(Mandatory)]$TaskID,
         $Comment
     )
     Invoke-KanbanizeAPIFunction -FunctionName add_comment -Parameters $PSBoundParameters
@@ -274,9 +274,9 @@ Function Add-KanbanizeComment {
 
 Function Move-KanbanizeTask {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)]$TaskID,
-        [parameter(Mandatory = $true)]$Column,
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)]$TaskID,
+        [parameter(Mandatory)]$Column,
         $Lane,
         $Position,
         $ExceedingReason
@@ -305,8 +305,8 @@ Function Edit-KanbanizeTask {
 
 Function Block-KanbanizTask {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)]$TaskID,
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)]$TaskID,
         [ValidateSet("block","editblock","unblock")]$Event,
         $BlockReason
 
@@ -316,7 +316,7 @@ Function Block-KanbanizTask {
 
 Function Add-KanbanizeSubTask {
     param(
-        [parameter(Mandatory = $true)]$TaskParent,
+        [parameter(Mandatory)]$TaskParent,
         $Title,
         $Assignee
     )
@@ -325,8 +325,8 @@ Function Add-KanbanizeSubTask {
 
 Function Edit-KanbanizeSubTask {
     param(
-        [parameter(Mandatory = $true)]$BoardID,
-        [parameter(Mandatory = $true)]$SubtaskID,
+        [parameter(Mandatory)]$BoardID,
+        [parameter(Mandatory)]$SubtaskID,
         $Title,
         $Assignee,
         [ValidateSet(1,0)]$Complete
@@ -336,8 +336,8 @@ Function Edit-KanbanizeSubTask {
 
 Function Log-KanbanizeTime {
     param(
-        [parameter(Mandatory = $true)]$LoggedTime,
-        [parameter(Mandatory = $true)]$TaskID,
+        [parameter(Mandatory)]$LoggedTime,
+        [parameter(Mandatory)]$TaskID,
         $Description
     )
     Invoke-KanbanizeAPIFunction -FunctionName log_time -Parameters $PSBoundParameters
@@ -349,4 +349,46 @@ Function Get-KanbanizeLinks {
         [Parameter(ParameterSetName="TaskID")]$TaskID
     )
     Invoke-KanbanizeAPIFunction -FunctionName get_links -Parameters $PSBoundParameters
+}
+
+Function Edit-KanbanizeLinks {
+    param (
+        [Parameter(Mandatory)]$TaskID,
+        [Parameter(Mandatory)][ValidateSet("set","unset")]$Action,
+        [Parameter(Mandatory)][ValidateSet("child","parent","relative","mirror","predecessor","successor")]$Type,
+        [Parameter(Mandatory)]$LinkedID
+    )
+    Invoke-KanbanizeAPIFunction -FunctionName edit_link -Parameters $PSBoundParameters
+}
+
+Function Add-KanbanizeAttachment {
+    Throw "Function not implemented. Please vote for it at https://github.com/Tervis-Tumbler/KanbanizePowerShell/issues/4"
+}
+
+Function Move-KanbanizeTaskToArchive {
+    param (
+        [Parameter(Mandatory)][Alias("TaskID")]$CardID,
+        $Version
+    )
+    Invoke-KanbanizeAPIFunction -FunctionName archive_task -Parameters $PSBoundParameters
+}
+
+Function Move-KanbanizeTaskToArchive {
+    param (
+        [Parameter(Mandatory)][Alias("TaskID")]$CardID,
+        $Fields
+    )
+    Invoke-KanbanizeAPIFunction -FunctionName edit_custom_fields -Parameters $PSBoundParameters
+}
+
+Function New-KabanizeCustomField {
+    param (
+        $Name,
+        $Value
+    )
+
+    [PSCustomObject][Ordered]@{
+        Name = $Name
+        Value = $Value
+    } 
 }
