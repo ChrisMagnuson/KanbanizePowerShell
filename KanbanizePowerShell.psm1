@@ -19,6 +19,10 @@ function Set-KanbanizeAPIKey {
     [Environment]::SetEnvironmentVariable( "KanbanizeAPIKey", $Key, "User" )
 }
 
+function Get-KanbanizeAPIKey {
+    $Env:KanbanizeAPIKey
+}
+
 Function Set-KanbanizeResponseFormat {
     param(
         [parameter(Mandatory)]
