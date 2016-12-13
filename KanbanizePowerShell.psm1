@@ -371,28 +371,8 @@ Function Add-KanbanizeAttachment {
 
 Function Move-KanbanizeTaskToArchive {
     param (
-        [Parameter(Mandatory)][Alias("TaskID")]$CardID,
+        [Parameter(Mandatory)][Alias("TaskID")][int[]]$CardID,
         $Version
     )
     Invoke-KanbanizeAPIFunction -FunctionName archive_task -Parameters $PSBoundParameters
-}
-
-Function Move-KanbanizeTaskToArchive {
-    param (
-        [Parameter(Mandatory)][Alias("TaskID")]$CardID,
-        $Fields
-    )
-    Invoke-KanbanizeAPIFunction -FunctionName edit_custom_fields -Parameters $PSBoundParameters
-}
-
-Function New-KabanizeCustomField {
-    param (
-        $Name,
-        $Value
-    )
-
-    [PSCustomObject][Ordered]@{
-        Name = $Name
-        Value = $Value
-    } 
 }
