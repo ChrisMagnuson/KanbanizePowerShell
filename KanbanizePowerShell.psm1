@@ -1,7 +1,7 @@
 if($env:KanbanizeSubDomain) {
-    $script:RootAPIURL = "http://$Env:KanbanizeSubDomain.kanbanize.com/index.php/api/kanbanize"
+    $script:RootAPIURL = "https://$Env:KanbanizeSubDomain.kanbanize.com/index.php/api/kanbanize"
 } else {
-    $script:RootAPIURL = "http://www.kanbanize.com/index.php/api/kanbanize"
+    $script:RootAPIURL = "https://www.kanbanize.com/index.php/api/kanbanize"
 }
 
 if($Env:KanbanizeAPIKey) {
@@ -44,7 +44,7 @@ Function Set-KanbanizeSubDomain {
         [Environment]::SetEnvironmentVariable( "KanbanizeSubDomain", $SubDomain, "User" )
     }
 
-    $script:RootAPIURL = "http://$SubDomain.kanbanize.com/index.php/api/kanbanize"
+    $script:RootAPIURL = "https://$SubDomain.kanbanize.com/index.php/api/kanbanize"
 }
 
 Function Invoke-KanbanizeLogin {
